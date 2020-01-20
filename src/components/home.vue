@@ -13,7 +13,7 @@
 
 <script lang="ts">
     import axios from 'axios';
-    import Tile from './Tile';
+    import Tile from './tile.vue';
 
     export default {
         name: "home",
