@@ -1,10 +1,16 @@
 <template>
-    <div class="home-page">
-        <h1>Entries</h1>
-        <div class="sorting-container"><span class="sorting-group" v-on:click="sortArrays()"><span class="sort"/> <span>Sort</span></span>
+    <div class="home-page  container overflow-auto">
+
+
+        <div class="sorting-container">
+            <h3>Entries</h3>
+            <select class="form-control sorting-group">
+                <option >API</option>
+                <option >Category</option>
+            </select>
         </div>
-        <div class="flexbox-container">
-            <router-link v-for="(entry, i) in info" :to="{name: 'Detail', params:{ entry}}" v-bind:key="i">
+        <div class="flexbox-container col-lg-12 ">
+            <router-link v-for="(entry, i) in info" :to="{path: `Detail`, query:{api:entry.API}}" v-bind:key="i">
                 <Tile v-bind:api-name="entry.API" v-bind:description="entry.Description"/>
             </router-link>
         </div>
@@ -12,78 +18,63 @@
 </template>
 
 <script lang="ts">
-    import axios from 'axios';
-    import Tile from './tile.vue';
+    import { getEntries } from '../services/index'
+    import Tile from './Tile';
 
     export default {
         name: "home",
         components: {
             Tile,
         },
-        methods: {
-            sortArrays() {
-                this.info.reverse();
-            }
-        },
-
         data() {
             return {
                 info: []
             }
         },
         beforeMount() {
-            axios
-                .get('https://api.publicapis.org/entries')
-                .then(response => {
-                    this.info = response.data.entries.slice(0, 10);
-                })
-                .catch(error => {
-                    this.errored = error
-                })
+            getEntries((data) => {
+               this.info = data.slice(0,10)
+            }, (error) => {
+                this.errored = error
+            })
+
         },
 
     }
 </script>
 
 <style scoped>
-    .flexbox-container {
-        display: -webkit-flex;
-        display: flex;
-        flex-wrap: wrap;
-    }
 
     .home-page {
-        width: 960px;
-        margin-top: 100px;
+        background: #fff;
+        height: 100vh;
+        padding: 80px 20px 100px;
+
     }
 
     .flexbox-container a {
         text-decoration: none;
     }
 
-    .sort {
-        background: url("../assets/sort_unsort.png");
-        width: 25px;
-        height: 25px;
-        display: block;
-        background-size: cover;
-
-    }
-
     .sorting-container {
-        display: flex;
-        align-items: end;
-        justify-content: flex-end;
         padding: 20px;
+        display: block;
+        margin-bottom: 35px;
+        margin-right: 2%;
     }
 
     .sorting-group {
-        display: flex;
         cursor: pointer;
+        width: 200px;
+        float: right;
+        position: relative;
+        top: 0px;
     }
 
     .home-page h1 {
-        margin: 0
+        color: #273849;
+        width: 80%;
+        float: left;
     }
 
     @media only screen and (max-width: 768px) {

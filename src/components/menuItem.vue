@@ -7,7 +7,7 @@
 <script lang="ts">
     export default {
         name: "MenuItem",
-        props: ['menuItem']
+        props: ['menuItem'],
 
 
     }
@@ -15,37 +15,56 @@
 
 <style scoped>
     button {
-        background-color: #f2f2f2;
-        border: none;
-        border-radius: 5px;
-        color: #4a4b4c;
         display: inline-block;
-        text-align: center;
-        width: 100px;
-        font-size: .875em;
-        margin-right: 5px;
-        outline: medium none;
+        padding: 5px 10px;
         text-decoration: none;
-        padding: 10px 0;
+        color: #304455;
+        border: none;
+        outline: none;
+        font-size: 20px;
+        margin-right: 15px;
+        border-radius: 5px;
+        font-size: 15px;
+        font-weight: bolder
+    }
+
+
+    a:hover button,
+    a:active button {
+        cursor: pointer;
+        background-color: #42b983;
+        color: #F6F6F6;
+        border-radius: 3px;
+        outline: none;
 
     }
 
-    button:hover {
-        background: #e65446 none repeat scroll 0 0;
-        border: medium none;
-        color: #fff;
+    button:hover, button:active, button:focus {
+        outline: none;
     }
 
     .menuItem {
-        padding: 0 5px;
+        display: inline-block;
+        text-decoration: none;
+        color: #F6F6F6;
+        opacity: 0.9;
     }
 
     @media only screen and (max-width: 768px) {
         /* For mobile phones: */
         .menuItem button {
             padding: 5px;
-            width: 78px;
+                background: none;
+                width: 100%;
+                border-bottom: 1px solid #ccc;
+                border-radius: 0;
+                 text-align: left;
+
 
         }
+        .menu-mobile-list a:last-child .menuItem button {
+            border-bottom:none
+        }
+        .menuItem{width:100%}
     }
 </style>

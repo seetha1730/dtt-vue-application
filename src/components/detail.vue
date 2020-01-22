@@ -1,7 +1,7 @@
 <template>
-    <div class="detail">
-        <h1>Detail</h1>
-        <table class="detail-view">
+    <div class="detail container overflow-auto">
+        <h3>Detail</h3>
+        <table class="detail-view col-lg-6">
             <thead>
             <tr>
                 <th>Property</th>
@@ -16,8 +16,10 @@
             </tr>
             </tbody>
         </table>
-        <div class="flexbox-container">
-            <router-link v-for="(entry, i) in relevantTiles" :to="{name: 'Detail', params:{ entry}}" v-bind:key="i">
+        <div class="flexbox-container col-lg-12">
+            <h3>Relevant Api's</h3>
+            <router-link v-for="(entry, i) in relevantTiles" :to="{name: 'Detail', query:{ api: entry.API}}"
+                         v-bind:key="i">
                 <Tile v-bind:api-name="entry.API" v-bind:description="entry.Description"/>
             </router-link>
         </div>
@@ -26,8 +28,8 @@
 
 <script lang="ts">
 
-    import axios from "axios";
-    import Tile from './tile.vue';
+    import {getEntries } from '../services/index'
+    import Tile from './Tile';
 
     export default {
         name: 'Detail',
@@ -41,41 +43,48 @@
             return {
                 relevantTiles: [],
                 entry: {},
-                tableKeys: []
+                tableKeys: [],
+                api: {}
             }
         },
         created() {
-            this.entry = this.$route.params.entry;
-            this.tableKeys = Object.keys(this.entry);
-            axios
-                .get('https://api.publicapis.org/entries')
-                .then(response => {
-                    this.relevantTiles = response.data.entries.filter(entry => {
-                        return entry['Category'] === this.entry.Category
-                    }).slice(0, 3)
-                })
-                .catch(error => {
-                    this.errored = error
-                })
+            this.api = this.$route.query.api;
+            getEntries((data) => {
+                this.entry = data.find(entry => entry.API === this.api);
+                this.tableKeys = Object.keys(this.entry);
+                this.relevantTiles = data.filter(entry => {
+                    return entry['Category'] === this.entry.Category
+                }).slice(0, 3)
+            }, (error) => {
+                this.errored = error
+            })
         }
     }
 </script>
 
 <style scoped>
     .detail {
-        margin-top: 80px;
+        background: #fff;
+        height: 100vh;
+        padding: 100px 20px;
     }
 
     .detail-view {
         width: 100%;
         border-collapse: collapse;
         table-layout: fixed;
+        text-align: left;
+
+
     }
 
     .detail-view td, .detail-view th {
         border: 1px solid #ddd;
-        padding: 8px;
+        padding: 8px 20px 8px;
         word-break: break-word;
+        color: #2973b7;
+        font-size: 15px;
+        font-weight: bold;
     }
 
     .detail-view tr:nth-child(even) {
@@ -89,16 +98,18 @@
     .detail-view th {
         padding-top: 12px;
         padding-bottom: 12px;
-        text-align: left;
-        background-color: #d2d2d2;
-        color: #000;
+        background-color: #42b983;
+        color: #304455;
     }
 
     .flexbox-container {
         margin: 20px 0;
-        display: -webkit-flex;
-        display: flex;
-        flex-wrap: wrap;
+        float: left;
+        padding: 0;
+    }
+
+    .flexbox-container .api-tile {
+        margin-left: 0
     }
 
     .flexbox-container a {

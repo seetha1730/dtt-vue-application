@@ -1,6 +1,6 @@
 <template>
-    <div class="Category">
-        <h1>Category</h1>
+    <div class="Category container overflow-auto">
+        <h3 class="mt40">Category</h3>
         <ol>
             <li v-for="(category,i) in info" v-bind:key="i">{{category}}</li>
         </ol>
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-    import axios from 'axios';
+    import { getCategories } from '../services/index';
 
     export default {
         name: "home",
@@ -19,14 +19,11 @@
             }
         },
         beforeMount() {
-            axios
-                .get('https://api.publicapis.org/categories')
-                .then(response => {
-                    this.info = response.data;
-                })
-                .catch(error => {
-                    this.errored = error
-                })
+            getCategories((data) => {
+                this.info = data
+            }, (error) => {
+              this.error = error
+            })
         },
 
     }
@@ -35,6 +32,9 @@
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
     .Category {
-        margin-top: 100px;
+        background: #fff;
+        height: 100vh;
+        padding: 80px 20px;
     }
+
 </style>

@@ -1,8 +1,8 @@
 <template>
-    <div class="random">
-        <h1>Random</h1>
-        <button v-on:click="getRandom()">Random item<span></span></button>
-        <router-link v-for="(entry, i) in info" :to="{name: 'Detail', params:{ entry}}" v-bind:key="i">
+    <div class="container random overflow-auto">
+        <div class="random-tile"><h3>Random</h3><span class="randomButton " v-on:click="getRandom()"><img
+                src="../assets/refresh-icon.png"/> </span></div>
+        <router-link v-for="(entry, i) in info" :to="{name: 'Detail', query:{ api:entry.API}}" v-bind:key="i">
             <Tile v-bind:api-name="entry.API" v-bind:description="entry.Description"/>
         </router-link>
 
@@ -10,8 +10,8 @@
 </template>
 
 <script lang="ts">
-    import axios from 'axios';
-    import Tile from './tile.vue'
+    import { getRandom } from '../services/index'
+    import Tile from './Tile'
 
     export default {
         name: "home",
@@ -26,14 +26,11 @@
         },
         methods: {
             getRandom: function () {
-                axios
-                    .get('https://api.publicapis.org/random')
-                    .then(response => {
-                        this.info = response.data.entries;
-                    })
-                    .catch(error => {
-                        this.errored = error
-                    })
+                getRandom((data) => {
+                    this.info = data;
+                }, (error) => {
+                    this.errored = error
+                })
             }
 
         },
@@ -46,34 +43,39 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
     .random a {
         text-decoration: none;
     }
 
-    .random {
-        margin-top: 100px;
+    .random .random-tile {
+        display: flex;
+        margin-top: 80px
     }
 
-    .random button {
-        background: #6b8fb4;
-        border-radius: 5px;
-        border: none;
-        padding: 11px;
-        color: #fff;
-        font-size: 14px;
+    .random span img {
+        background: #42b983;
         cursor: pointer;
-        display: flex;
+        border-radius: 15px;
+        padding: 5px;
         margin-left: 10px;
     }
 
-    .random button:focus {
-        outline: none;
+    .random span img:hover {
+        background: #90dfbb;
     }
 
+    .random {
+        background: #fff;
+        height: 100vh;
+        padding: 80px 20px;
+    }
     .random button span {
         background: url("../assets/refresh-icon.png") no-repeat center right;
         width: 30px;
         height: 19px;
+        position: relative;
+        top: 5px;
     }
 
     @media only screen and (max-width: 768px) {
