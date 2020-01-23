@@ -4,14 +4,16 @@
 
         <div class="sorting-container">
             <h3>Entries</h3>
-            <select class="form-control sorting-group">
-                <option >API</option>
-                <option >Category</option>
-            </select>
+            <label>
+                <select class="form-control" v-on:change="sorting">
+                    <option value="a-z">A to Z</option>
+                    <option value="z-a">Z to A</option>
+                </select>
+            </label>
         </div>
         <div class="flexbox-container col-lg-12 ">
             <router-link v-for="(entry, i) in info" :to="{path: `Detail`, query:{api:entry.API}}" v-bind:key="i">
-                <Tile v-bind:api-name="entry.API" v-bind:description="entry.Description"/>
+              <Tile v-bind:api-name="entry.API" v-bind:description="entry.Description"/>
             </router-link>
         </div>
     </div>
@@ -25,20 +27,62 @@
         name: "home",
         components: {
             Tile,
-        },
+    },
         data() {
             return {
-                info: []
+                info: [],
             }
+
+        },
+        methods: {
+
+            /**
+             * @method sorting
+             * this method is used to sort array ascending or descending based on dropdown value change
+             * @param {event} e - event object of change event
+             * */
+              sorting: function(e) {
+                  if(e.target.value === 'z-a') {
+
+                      this.info.sort((a, b) => {
+
+                          if (a.API > b.API) {
+                              return -1;
+                          }
+                          if (b.API > a.API) {
+                              return 1;
+                          }
+                          return 0;
+                      })
+                  } else {
+                      this.info.sort((a, b) => {
+
+                          if (a.API < b.API) {
+                              return -1;
+                          }
+                          if (b.API < a.API) {
+                              return 1;
+                          }
+                          return 0;
+                      })
+                  }
+
+                  }
+
+
+
         },
         beforeMount() {
+            /**
+             * this functional calls api thorough service, which will return array of entries.
+             * */
             getEntries((data) => {
                this.info = data.slice(0,10)
             }, (error) => {
                 this.errored = error
             })
+        }
 
-        },
 
     }
 </script>

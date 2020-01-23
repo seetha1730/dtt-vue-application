@@ -19,6 +19,9 @@
             }
         },
         beforeMount() {
+            /**
+             * this functional calls api thorough service, which will return array of entries.
+             * */
             getCategories((data) => {
                 this.info = data
             }, (error) => {

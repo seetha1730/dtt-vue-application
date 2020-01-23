@@ -21,7 +21,6 @@
         color: #304455;
         border: none;
         outline: none;
-        font-size: 20px;
         margin-right: 15px;
         border-radius: 5px;
         font-size: 15px;
@@ -43,7 +42,7 @@
         outline: none;
     }
 
-    .menuItem {
+    .menuItem{
         display: inline-block;
         text-decoration: none;
         color: #F6F6F6;

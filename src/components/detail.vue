@@ -48,7 +48,12 @@
             }
         },
         created() {
-            this.api = this.$route.query.api;
+
+            this.api = this.$route.query.api; // name of the api is stored here
+
+            /**
+             * this functional calls api thorough service, which will return array of entries.
+             * */
             getEntries((data) => {
                 this.entry = data.find(entry => entry.API === this.api);
                 this.tableKeys = Object.keys(this.entry);

@@ -6,7 +6,7 @@
             <div class="logo-section clearfix">
 
 
-                <span class="logo"><img src="../assets/logo.png"/> Vue.js app</span></div>
+                <span class="logo"><img src="../assets/logo.png"/>DTT</span></div>
             <div v-show='showMobileMenu' class="menu-mobile-list clearfix ">
                 <router-link class-active="active"  v-for=" (i, index) in item " :to="i.path" v-bind:key="index">
                     <MenuItem v-bind:menu-item="i.name"/>
@@ -33,6 +33,7 @@
         name: 'Menu',
         data: function () {
             return {
+                //item holds array of menu items
                 item: [
                     {name: 'Home', path: '/'},
                     {name: 'Categories', path: '/category'},
@@ -102,6 +103,11 @@
     .menu-mobile .menuItem button {
         background: none;
 
+    }
+    .logo{
+        font-size: 15px;
+        font-weight: bolder;
+        color: #304455;
     }
 
     .menu-mobile button.active {

@@ -1,5 +1,11 @@
 import axios from "axios";
 
+/**
+ * @method getEntries
+ * @param {function} success: success call back function
+ * @param {function} failure: failure call back function
+ * this function will call entries endpoint
+ * */
 export const getEntries = function(success,failure){
     axios
         .get('https://api.publicapis.org/entries')
@@ -11,6 +17,12 @@ export const getEntries = function(success,failure){
         })
 }
 
+/**
+ * @method getRandom
+ * @param {function} success: success call back function
+ * @param {function} failure: failure call back function
+ * this function will call random endpoint
+ * */
 export const getRandom = function (success, failure) {
     axios
         .get('https://api.publicapis.org/random')
@@ -22,6 +34,12 @@ export const getRandom = function (success, failure) {
         })
 }
 
+/**
+ * @method getCategories
+ * @param {function} success: success call back function
+ * @param {function} failure: failure call back function
+ * this function will call categories endpoint
+ * */
 export const getCategories = function (success, failure) {
     axios
         .get('https://api.publicapis.org/categories')

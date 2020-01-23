@@ -25,6 +25,9 @@
             }
         },
         methods: {
+            /**
+             * this functional calls api thorough service, which will return random api object.
+             * */
             getRandom: function () {
                 getRandom((data) => {
                     this.info = data;
