@@ -2,7 +2,7 @@
     <div class="container random overflow-auto">
         <div class="random-tile"><h3>Random</h3><span class="randomButton " v-on:click="getRandom()"><img
                 src="../assets/refresh-icon.png"/> </span></div>
-        <router-link v-for="(entry, i) in info" :to="{name: 'Detail', query:{ api:entry.API}}" v-bind:key="i">
+        <router-link v-for="(entry, i) in randomItem" :to="{name: 'Detail', query:{ api:entry.API}}" v-bind:key="i">
             <Tile v-bind:api-name="entry.API" v-bind:description="entry.Description"/>
         </router-link>
 
@@ -11,35 +11,45 @@
 
 <script lang="ts">
     import { getRandom } from '../services/index'
-    import Tile from './Tile'
+    import Tile from '@/components/Tile.vue'
+    import {Component, Vue} from 'vue-property-decorator';
+    import {Entries} from "@/types";
 
-    export default {
-        name: "home",
-        components: {
-            Tile,
-        },
+ @Component({
+     components : {
+         Tile
+     }
+ })
 
-        data() {
-            return {
-                info: []
-            }
-        },
-        methods: {
+    export default class Random extends Vue {
+
+    randomItem: Entries = {
+        API: '',
+        Description: '',
+        Auth: '',
+        HTTPS: false,
+        Cors: '',
+        Link: '',
+        Category: ''
+    };
+     error: String = ''
+
+
+
             /**
              * this functional calls api thorough service, which will return random api object.
              * */
-            getRandom: function () {
-                getRandom((data) => {
-                    this.info = data;
-                }, (error) => {
-                    this.errored = error
+            getRandom() {
+                getRandom((data:Entries) => {
+                    this.randomItem = data;
+                }, (error:String) => {
+                    this.error = error
                 })
             }
 
-        },
         beforeMount() {
             this.getRandom();
-        },
+        }
 
     }
 </script>

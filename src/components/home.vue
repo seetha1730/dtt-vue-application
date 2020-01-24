@@ -12,78 +12,72 @@
             </label>
         </div>
         <div class="flexbox-container col-lg-12 ">
-            <router-link v-for="(entry, i) in info" :to="{path: `Detail`, query:{api:entry.API}}" v-bind:key="i">
-              <Tile v-bind:api-name="entry.API" v-bind:description="entry.Description"/>
+            <router-link v-for="(entry, i) in entries" :to="{path: `Detail`, query:{api:entry.API}}" v-bind:key="i">
+                <Tile v-bind:api-name="entry.API" v-bind:description="entry.Description"/>
             </router-link>
         </div>
     </div>
 </template>
 
 <script lang="ts">
-    import { getEntries } from '../services/index'
-    import Tile from './Tile';
+    import {getEntries} from '../services/index'
+    import Tile from '@/components/Tile.vue'
+    import {Entries} from '../types/index'
+    import {Component, Vue} from 'vue-property-decorator';
 
-    export default {
-        name: "home",
+    @Component({
         components: {
-            Tile,
-    },
-        data() {
-            return {
-                info: [],
+            Tile
+        },
+    })
+    export default class Home extends Vue {
+        entries: Entries[] = [];
+        error: String = '';
+
+        /**
+         * @method sorting
+         * this method is used to sort array ascending or descending based on dropdown value change
+         * @param {event} e - event object of change event
+         * */
+
+        sorting(e: any): void {
+            if (e.target.value === 'z-a') {
+
+                this.entries.sort((a: Entries, b: Entries) => {
+
+                    if (a.API > b.API) {
+                        return -1;
+                    }
+                    if (b.API > a.API) {
+                        return 1;
+                    }
+                    return 0;
+                })
+            } else {
+                this.entries.sort((a: Entries, b: Entries) => {
+
+                    if (a.API < b.API) {
+                        return -1;
+                    }
+                    if (b.API < a.API) {
+                        return 1;
+                    }
+                    return 0;
+                })
             }
 
-        },
-        methods: {
+        }
 
-            /**
-             * @method sorting
-             * this method is used to sort array ascending or descending based on dropdown value change
-             * @param {event} e - event object of change event
-             * */
-              sorting: function(e) {
-                  if(e.target.value === 'z-a') {
-
-                      this.info.sort((a, b) => {
-
-                          if (a.API > b.API) {
-                              return -1;
-                          }
-                          if (b.API > a.API) {
-                              return 1;
-                          }
-                          return 0;
-                      })
-                  } else {
-                      this.info.sort((a, b) => {
-
-                          if (a.API < b.API) {
-                              return -1;
-                          }
-                          if (b.API < a.API) {
-                              return 1;
-                          }
-                          return 0;
-                      })
-                  }
-
-                  }
-
-
-
-        },
-        beforeMount() {
+        beforeMount(): void {
             /**
              * this functional calls api thorough service, which will return array of entries.
              * */
-            getEntries((data) => {
-               this.info = data.slice(0,10)
-            }, (error) => {
-                this.errored = error
+            getEntries((data: Entries[]) => {
+                this.entries = data.slice(0, 10)
+            }, (error: string) => {
+                this.error = error
             })
         }
-
-
     }
 </script>
 

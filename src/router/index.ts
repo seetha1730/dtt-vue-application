@@ -1,9 +1,9 @@
 import Vue from 'vue'
 import Router from 'vue-router';
-import home from '../components/home';
-import category from "../components/category";
-import random from "../components/random";
-import detail from "../components/detail";
+import Home from '@/components/home.vue';
+import category from "@/components/category.vue";
+import random from "@/components/random.vue";
+import detail from "@/components/detail.vue";
 
 
 Vue.use(Router);
@@ -13,7 +13,7 @@ export default new Router({
         {
             path: '/',
             name: 'Home',
-            component: home
+            component: Home
         },
         {
             path: '/category',

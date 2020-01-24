@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios, {AxiosResponse} from "axios";
+import {Entries} from "@/types";
 
 /**
  * @method getEntries
@@ -6,10 +7,10 @@ import axios from "axios";
  * @param {function} failure: failure call back function
  * this function will call entries endpoint
  * */
-export const getEntries = function(success,failure){
+export const getEntries = function(success: Function ,failure: Function){
     axios
         .get('https://api.publicapis.org/entries')
-        .then(response => {
+        .then((response: AxiosResponse) =>  {
           success(response.data.entries)
         })
         .catch(error => {
@@ -23,10 +24,11 @@ export const getEntries = function(success,failure){
  * @param {function} failure: failure call back function
  * this function will call random endpoint
  * */
-export const getRandom = function (success, failure) {
+export const getRandom =  (success: Function ,failure: Function) =>  {
     axios
         .get('https://api.publicapis.org/random')
-        .then(response => {
+        .then(response =>
+        {
             success(response.data.entries)
         })
         .catch(error => {
@@ -40,7 +42,7 @@ export const getRandom = function (success, failure) {
  * @param {function} failure: failure call back function
  * this function will call categories endpoint
  * */
-export const getCategories = function (success, failure) {
+export const getCategories = function (success: Function ,failure: Function) {
     axios
         .get('https://api.publicapis.org/categories')
         .then(response => {

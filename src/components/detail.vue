@@ -28,40 +28,57 @@
 
 <script lang="ts">
 
-    import {getEntries } from '../services/index'
-    import Tile from './Tile';
+    import {getEntries} from '@/services'
+    import Tile from '@/components/Tile.vue';
+    import {Entries} from "@/types";
+    import {Component, Vue} from 'vue-property-decorator';
 
-    export default {
-        name: 'Detail',
+    @Component({
         props: {
             msg: String
         },
         components: {
             Tile
-        },
-        data: function () {
-            return {
-                relevantTiles: [],
-                entry: {},
-                tableKeys: [],
-                api: {}
-            }
-        },
+        }
+    })
+
+    export default class Detail extends Vue {
+
+        relevantTiles: Entries[] = []
+        entry: Entries = {
+            API: '',
+            Description: '',
+            Auth: '',
+            HTTPS: false,
+            Cors: '',
+            Link: '',
+            Category: ''
+        }
+        tableKeys: String[] = []
+        error: String = ''
+
         created() {
 
-            this.api = this.$route.query.api; // name of the api is stored here
 
             /**
              * this functional calls api thorough service, which will return array of entries.
              * */
-            getEntries((data) => {
-                this.entry = data.find(entry => entry.API === this.api);
+            getEntries((data: Entries[]) => {
+                this.entry = data.find(entry => entry.API === this.$route.query.api) || {
+                    API: '',
+                    Description: '',
+                    Auth: '',
+                    HTTPS: false,
+                    Cors: '',
+                    Link: '',
+                    Category: ''
+                };
                 this.tableKeys = Object.keys(this.entry);
                 this.relevantTiles = data.filter(entry => {
                     return entry['Category'] === this.entry.Category
                 }).slice(0, 3)
-            }, (error) => {
-                this.errored = error
+            }, (error: String) => {
+                this.error = error
             })
         }
     }

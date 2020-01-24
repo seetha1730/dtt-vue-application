@@ -1,25 +1,27 @@
 <template>
     <div id="app">
         <Menu/>
-
         <router-view></router-view>
-        <Footer/>
+       <fixed-footer />
     </div>
 </template>
 
-<script>
-    import Menu from './components/menu.vue'
-    import Footer from './components/footer.vue'
-    import 'bootstrap/dist/css/bootstrap.css'
+<script lang="ts">
+import { Component, Vue } from 'vue-property-decorator';
+import Menu from "@/components/menu.vue";
+import 'bootstrap/dist/css/bootstrap.css'
+import FixedFooter from "@/components/footer.vue";
+
+@Component({
+  components: {
+      FixedFooter,
+      Menu,
+  },
+})
+export default class App extends Vue {
 
 
-    export default {
-        name: 'app',
-        components: {
-            Menu,
-            Footer
-        }
-    }
+}
 </script>
 
 <style>

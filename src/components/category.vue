@@ -2,7 +2,7 @@
     <div class="Category container overflow-auto">
         <h3 class="mt40">Category</h3>
         <ol>
-            <li v-for="(category,i) in info" v-bind:key="i">{{category}}</li>
+            <li v-for="(category,i) in category" v-bind:key="i">{{category}}</li>
         </ol>
 
     </div>
@@ -10,24 +10,26 @@
 
 <script lang="ts">
     import { getCategories } from '../services/index';
+    import {Component, Vue} from 'vue-property-decorator';
 
-    export default {
-        name: "home",
-        data() {
-            return {
-                info: []
-            }
+    @Component({
+        components: {
         },
+    })
+    export default class Category extends Vue {
+        category: String[] = [];
+        error: String = '';
+
         beforeMount() {
             /**
              * this functional calls api thorough service, which will return array of entries.
              * */
-            getCategories((data) => {
-                this.info = data
-            }, (error) => {
+            getCategories((data: String[]) => {
+                this.category = data
+            }, (error: String) => {
               this.error = error
             })
-        },
+        }
 
     }
 </script>

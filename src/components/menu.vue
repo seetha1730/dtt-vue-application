@@ -8,7 +8,7 @@
 
                 <span class="logo"><img src="../assets/logo.png"/>DTT</span></div>
             <div v-show='showMobileMenu' class="menu-mobile-list clearfix ">
-                <router-link class-active="active"  v-for=" (i, index) in item " :to="i.path" v-bind:key="index">
+                <router-link class-active="active" v-for=" (i, index) in item " :to="i.path" v-bind:key="index">
                     <MenuItem v-bind:menu-item="i.name"/>
                 </router-link>
             </div>
@@ -27,27 +27,22 @@
 </template>
 
 <script lang="ts">
-    import MenuItem from './menuItem'
+    import MenuItem from '@/components/menuItem.vue'
+    import {Component, Vue} from 'vue-property-decorator';
 
-    export default {
-        name: 'Menu',
-        data: function () {
-            return {
-                //item holds array of menu items
-                item: [
-                    {name: 'Home', path: '/'},
-                    {name: 'Categories', path: '/category'},
-                    {name: 'Random', path: '/random'},
-                ],
-                showMobileMenu: false,
-
-
-            }
-
-        },
+    @Component({
         components: {
             MenuItem
         }
+    })
+    export default class Menu extends Vue {
+        item: { name: String, path: String }[] = [
+            {name: 'Home', path: '/'},
+            {name: 'Categories', path: '/category'},
+            {name: 'Random', path: '/random'},
+        ];
+        showMobileMenu:Boolean = false
+
     }
 </script>
 
@@ -104,7 +99,8 @@
         background: none;
 
     }
-    .logo{
+
+    .logo {
         font-size: 15px;
         font-weight: bolder;
         color: #304455;
@@ -129,7 +125,7 @@
 
         .menu-mobile {
             display: block;
-            width:100%
+            width: 100%
         }
 
         .menu-right, .menu-left {
@@ -146,17 +142,22 @@
         .menu.fixed-banner.active {
             min-height: 200px;
         }
-        .logo-section{
+
+        .logo-section {
             margin: 0 auto;
             position: relative;
-            top:-30px;
-            width:50%;
+            top: -30px;
+            width: 50%;
             display: flex;
             justify-content: center;
             align-items: center;
 
         }
-        .menu-mobile-list a{background:none;width:100%;}
+
+        .menu-mobile-list a {
+            background: none;
+            width: 100%;
+        }
 
     }
 </style>
